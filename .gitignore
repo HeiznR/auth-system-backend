@@ -1,0 +1,36 @@
+# Python bytecode
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# FastAPI related
+*.log
+
+# Databases
+*.db
+*.sqlite3
+*.sqlite
+
+# .env files
+.env
+.env.*
+
+# Temporary files
+*.bak
+*.tmp
+
+# Operating system files
+.DS_Store
+Thumbs.db
