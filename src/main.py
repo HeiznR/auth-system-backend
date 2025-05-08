@@ -4,7 +4,7 @@ import os
 import uvicorn
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from src.api import main_router
+from src.api.main_router import main_router
 
 
 app = FastAPI()
