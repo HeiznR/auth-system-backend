@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+sqlalchemy==2.0.10
+aiosqlite
+pydantic[email]
+asyncpg
+uuid
+pydantic_settings

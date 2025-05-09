@@ -1,0 +1,46 @@
+name: fastapi_services
+
+services:
+  fastapi:
+    container_name: fastapi
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app/src
+    environment:
+      - PYTHONPATH=/app
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+  postgres:
+    restart: always
+    image: postgres:16.3-alpine3.20
+    container_name: postgres
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - django_db:/var/lib/postgresql/data
+  pgadmin:
+    restart: always
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    env_file:
+      - .env
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    ports:
+      - "8888:80"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+
+volumes:
+  django_db:
+  pgadmin:

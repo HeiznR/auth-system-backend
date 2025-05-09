@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
-
 from sqlalchemy import insert, select
-from db.database import async_session_maker
+from src.db.database import async_session_maker
 
 
 class AbstractRepository(ABC):
@@ -29,14 +28,15 @@ class SQLAlchemyRepository(AbstractRepository):
         async with async_session_maker() as session:
             stmt = insert(self.model).values(**data).returning(self.model.id)
             res = await session.execute(stmt)
-            session.commit()
+            await session.commit()
             return res.scalar_one()
 
     async def read(self):
         async with async_session_maker() as session:
             stmt = select(self.model)
             res = await session.execute(stmt)
-            return res
+            rows = res.scalars().all()
+            return rows
 
     async def update():
         raise NotImplementedError
