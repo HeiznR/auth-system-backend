@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from sqlalchemy import insert, select
+from sqlalchemy import insert, select, delete, update
 from src.db.database import async_session_maker
 
 
@@ -20,6 +20,10 @@ class AbstractRepository(ABC):
     async def delete_one():
         raise NotImplementedError
 
+    @abstractmethod
+    async def read_one():
+        raise NotImplementedError
+
 
 class SQLAlchemyRepository(AbstractRepository):
     model = None
@@ -38,8 +42,24 @@ class SQLAlchemyRepository(AbstractRepository):
             rows = res.scalars().all()
             return rows
 
-    async def update():
-        raise NotImplementedError
+    async def read_one(self, id: str):
+        async with async_session_maker() as session:
+            stmt = select(self.model).where(self.model.id == id)
+            res = await session.execute(stmt)
+            user = res.scalar_one_or_none()
+            return user
+
+    async def update(self, id: str, data: dict):
+        async with async_session_maker() as session:
+            stmt = (
+                update(self.model)
+                .where(id == self.model.id)
+                .values(**data)
+                .returning(self.model)
+            )
+            res = await session.execute(stmt)
+            await session.commit()
+            return res
 
     async def delete_one():
         raise NotImplementedError

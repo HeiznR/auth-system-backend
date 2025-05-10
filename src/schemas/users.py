@@ -1,7 +1,8 @@
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from typing import Optional
 
 
-class StudentSchema(BaseModel):
+class UsersSchema(BaseModel):
     id: str
     email: EmailStr
     name: str = Field(max_length=30)
@@ -10,7 +11,13 @@ class StudentSchema(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
-class StudentSchemaAdd(BaseModel):
+class UsersSchemaAdd(BaseModel):
     email: EmailStr
     name: str = Field(max_length=30)
     age: int = Field(ge=0, le=130)
+
+
+# class UsersSchemaUpdate(BaseModel):
+#     email: Optional[str]
+#     name: Optional[str]
+#     age: Optional[int]
