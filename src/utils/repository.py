@@ -17,7 +17,7 @@ class AbstractRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def delete_one():
+    async def delete():
         raise NotImplementedError
 
     @abstractmethod
@@ -61,5 +61,9 @@ class SQLAlchemyRepository(AbstractRepository):
             await session.commit()
             return res
 
-    async def delete_one():
-        raise NotImplementedError
+    async def delete(self, id: str):
+        async with async_session_maker() as session:
+            stmt = delete(self.model).where(self.model.id == id)
+            res = await session.execute(stmt)
+            await session.commit()
+            return res.rowcount > 0

@@ -1,5 +1,5 @@
 from src.utils.repository import SQLAlchemyRepository
-from src.schemas.users import UsersSchema, UsersSchemaAdd, UsersSchemaUpdate
+from src.schemas.users import UsersSchema, UsersSchemaAdd
 from fastapi import HTTPException
 
 
@@ -19,6 +19,10 @@ class UsersService:
     async def read_user_by_id(self, id: str):
         user = await self.user_repo.read_one(id)
         return user
+
+    async def delete_user(self, id: str):
+        isDeleted = await self.user_repo.delete(id)
+        return isDeleted
 
     # async def update_user(self, user_id: str, user: UsersSchemaUpdate):
     #     user = await self.user_repo.read_one(user_id)
