@@ -1,5 +1,5 @@
 from src.utils.repository import SQLAlchemyRepository
-from src.schemas.users import UsersSchema, UsersSchemaAdd
+from src.schemas.users import UsersSchema, UsersSchemaAdd, UsersSchemaUpdate
 from fastapi import HTTPException
 
 
@@ -24,10 +24,11 @@ class UsersService:
         isDeleted = await self.user_repo.delete(id)
         return isDeleted
 
-    # async def update_user(self, user_id: str, user: UsersSchemaUpdate):
-    #     user = await self.user_repo.read_one(user_id)
-    #     if not user:
-    #         raise HTTPException(status_code=404)
-    #     user_dict = user.model_dump(exclude_unset=True)
-    #     user = await self.user_repo.update(user_id, user_dict)
-    #     return UsersSchema.model_validate(user)
+    async def update_user(self, user_id: str, user: UsersSchemaUpdate):
+        is_user_exist = await self.user_repo.read_one(user_id)
+        if not is_user_exist:
+            raise HTTPException(status_code=404)
+
+        user_dict = user.model_dump(exclude_unset=True)
+        user = await self.user_repo.update(user_id, user_dict)
+        return user

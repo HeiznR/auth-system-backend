@@ -59,7 +59,7 @@ class SQLAlchemyRepository(AbstractRepository):
             )
             res = await session.execute(stmt)
             await session.commit()
-            return res
+            return res.scalar_one_or_none()
 
     async def delete(self, id: str):
         async with async_session_maker() as session:

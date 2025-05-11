@@ -17,7 +17,7 @@ class UsersSchemaAdd(BaseModel):
     age: int = Field(ge=0, le=130)
 
 
-# class UsersSchemaUpdate(BaseModel):
-#     email: Optional[str]
-#     name: Optional[str]
-#     age: Optional[int]
+class UsersSchemaUpdate(BaseModel):
+    email: Optional[str] = None
+    name: Optional[str] = None
+    age: Optional[int] = None

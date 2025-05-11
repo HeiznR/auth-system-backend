@@ -1,6 +1,6 @@
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException
 from src.repositories.users import UsersRepository
-from src.schemas.users import UsersSchema, UsersSchemaAdd
+from src.schemas.users import UsersSchema, UsersSchemaAdd, UsersSchemaUpdate
 from src.services.users import UsersService
 
 
@@ -44,9 +44,7 @@ async def delete_user(user_id: str):
     return {"detail": "User deleted successfully"}
 
 
-# @router.put("/users/{user_id}", tags=["users"], summary="update user")
-# async def update_user(user_id: str, request: Request):
-#     user_data = await request.json()
-#     print(f"Received body: {user_data}")
-#     user_id = await UsersService(UsersRepository()).update_user(user_id, user_data)
-#     return user_id
+@router.put("/users/{user_id}", tags=["users"], summary="update user")
+async def update_user(user_id: str, user_data: UsersSchemaUpdate):
+    user_id = await UsersService(UsersRepository()).update_user(user_id, user_data)
+    return user_id
