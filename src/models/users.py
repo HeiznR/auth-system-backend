@@ -10,3 +10,4 @@ class UserModel(Base):
     email: Mapped[str]
     name: Mapped[str]
     age: Mapped[int]
+    password: Mapped[str]

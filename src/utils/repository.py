@@ -21,7 +21,11 @@ class AbstractRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def read_one():
+    async def read_by_id():
+        raise NotImplementedError
+
+    @abstractmethod
+    async def read_by_email():
         raise NotImplementedError
 
 
@@ -30,7 +34,7 @@ class SQLAlchemyRepository(AbstractRepository):
 
     async def create(self, data: dict):
         async with async_session_maker() as session:
-            stmt = insert(self.model).values(**data).returning(self.model.id)
+            stmt = insert(self.model).values(**data).returning(self.model)
             res = await session.execute(stmt)
             await session.commit()
             return res.scalar_one()
@@ -42,9 +46,16 @@ class SQLAlchemyRepository(AbstractRepository):
             rows = res.scalars().all()
             return rows
 
-    async def read_one(self, id: str):
+    async def read_by_id(self, id: str):
         async with async_session_maker() as session:
             stmt = select(self.model).where(self.model.id == id)
+            res = await session.execute(stmt)
+            user = res.scalar_one_or_none()
+            return user
+
+    async def read_by_email(self, email: str):
+        async with async_session_maker() as session:
+            stmt = select(self.model).where(self.model.email == email)
             res = await session.execute(stmt)
             user = res.scalar_one_or_none()
             return user
