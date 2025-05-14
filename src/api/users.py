@@ -16,7 +16,7 @@ async def create_user(
 @router.get("/users", tags=["users"], summary="get all users")
 async def get_all_users(users_service: UsersService = Depends()) -> list[UsersSchema]:
     try:
-        return await users_service.read_users()
+        return await users_service.get_users()
 
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -27,7 +27,7 @@ async def get_user_by_id(
     user_id: str, users_service: UsersService = Depends()
 ) -> UsersSchema:
     try:
-        return await users_service.read_user_by_id(user_id)
+        return await users_service.get_user_by_id(user_id)
 
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -36,7 +36,7 @@ async def get_user_by_id(
 @router.put("/users/{user_id}", tags=["users"], summary="update user")
 async def update_user(
     user_id: str, user_data: UsersSchemaUpdate, users_service: UsersService = Depends()
-):
+) -> UsersSchema:
     return await users_service.update_user(user_id, user_data)
 
 

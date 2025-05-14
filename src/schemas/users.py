@@ -2,11 +2,14 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field
 from typing import Optional
 
 
-class UsersSchemaAdd(BaseModel):
+class UsersSchemaLogin(BaseModel):
     email: EmailStr
+    password: str
+
+
+class UsersSchemaAdd(UsersSchemaLogin):
     name: str = Field(max_length=30)
     age: int = Field(ge=0, le=130)
-    password: str
 
 
 class UsersSchema(UsersSchemaAdd):

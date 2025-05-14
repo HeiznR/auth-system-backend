@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings
+from passlib.context import CryptContext
 
 
 class Settings(BaseSettings):
@@ -13,3 +14,6 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
+
+
+pwdContext = CryptContext(schemes=["bcrypt"], deprecated="auto")
